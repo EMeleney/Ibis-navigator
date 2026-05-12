@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ibis Legacy Law — Monday.com Workflow Navigator</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0F6E56;
+  --teal-lt:#E6F4F0;
+  --teal-md:#C2E5DC;
+  --navy:#1B3A6B;
+  --navy-lt:#EEF2F9;
+  --s:#ffffff;
+  --s2:#F7F8FC;
+  --s3:#EEF0F7;
+  --bd:#E3E7F0;
+  --bd2:#C9D0E8;
+  --t1:#111827;
+  --t2:#374151;
+  --t3:#6B7280;
+  --t4:#9CA3AF;
+  --r:7px;
+  --rl:11px;
+  --shadow-sm:0 1px 3px rgba(17,24,39,.07),0 1px 2px rgba(17,24,39,.04);
+  --shadow-md:0 4px 12px rgba(17,24,39,.09),0 2px 6px rgba(17,24,39,.05);
+  --shadow-lg:0 8px 24px rgba(17,24,39,.10),0 4px 10px rgba(17,24,39,.06);
+  --font:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+
+body{
+  font-family:var(--font);
+  font-size:14px;
+  color:var(--t1);
+  background:#ECEEF5;
+  background-image:
+    radial-gradient(ellipse at 20% 0%,rgba(15,110,86,.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 100%,rgba(27,58,107,.06) 0%,transparent 50%);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  margin:0;
+  padding:1.5rem 1rem 3rem;
+}
+.wrap{max-width:880px;margin:0 auto}
+
+/* ── Header ── */
+.hdr{
+  display:flex;align-items:center;gap:14px;
+  padding:.875rem 1.25rem;
+  background:var(--s);
+  border:1px solid var(--bd);
+  border-radius:var(--rl);
+  margin-bottom:1rem;
+  box-shadow:var(--shadow-sm);
+}
+.hdr-logo{height:44px;width:auto;object-fit:contain;flex-shrink:0}
+.hdr-fb{
+  width:38px;height:38px;border-radius:var(--r);
+  background:var(--navy);display:none;align-items:center;
+  justify-content:center;color:#fff;font-size:17px;flex-shrink:0;
+}
+.hdr-text{flex:1;min-width:0}
+.hdr-text h1{
+  font-size:14px;font-weight:600;color:var(--t1);
+  letter-spacing:-.015em;line-height:1.3;
+}
+.hdr-text p{font-size:11px;color:var(--t3);margin-top:2px;letter-spacing:.01em}
+.hdr-pills{display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0}
+.hdr-pill{
+  font-size:11px;padding:3px 9px;border-radius:20px;
+  border:1px solid var(--bd);color:var(--t2);background:var(--s2);
+  display:flex;align-items:center;gap:4px;white-space:nowrap;
+  font-weight:500;
+}
+
+/* ── App shell ── */
+.app{
+  background:var(--s);
+  border:1px solid var(--bd);
+  border-radius:var(--rl);
+  overflow:hidden;
+  box-shadow:var(--shadow-md);
+}
+.app-layout{display:grid;grid-template-columns:196px 1fr;min-height:640px}
+
+/* ── Sidebar ── */
+.sb{
+  border-right:1px solid var(--bd);
+  background:var(--s2);
+  padding:12px 0 0;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.sb-bottom{
+  margin-top:auto;padding:12px 14px 14px;
+  border-top:1px solid var(--bd);
+  font-size:10px;color:var(--t4);font-weight:500;
+  letter-spacing:.02em;
+  display:flex;align-items:center;gap:6px;
+}
+.sb-bottom-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.sb-grp-lbl{
+  font-size:10px;font-weight:600;color:var(--t4);
+  text-transform:uppercase;letter-spacing:.08em;
+  padding:10px 14px 5px;
+}
+.sb-item{
+  display:flex;align-items:center;gap:9px;width:100%;
+  padding:7px 14px 7px 16px;
+  font-size:12.5px;font-weight:500;color:var(--t2);
+  background:none;border:none;cursor:pointer;
+  font-family:var(--font);text-align:left;
+  transition:color .12s,background .12s;
+  position:relative;letter-spacing:-.01em;
+}
+.sb-item i{font-size:14px;flex-shrink:0;color:var(--t4);transition:color .12s}
+.sb-item:hover{color:var(--t1);background:rgba(0,0,0,.03)}
+.sb-item:hover i{color:var(--t3)}
+.sb-item.on{color:var(--teal);background:var(--teal-lt);font-weight:600}
+.sb-item.on i{color:var(--teal)}
+.sb-item.on::before{
+  content:'';position:absolute;left:0;top:4px;bottom:4px;
+  width:2.5px;background:var(--teal);border-radius:0 2px 2px 0;
+}
+.sb-sep{height:1px;background:var(--bd);margin:8px 14px}
+
+/* ── Pane ── */
+.pane{padding:1.25rem;overflow:hidden}
+
+/* ── Search ── */
+.srch-wrap{
+  display:flex;align-items:center;gap:8px;
+  background:var(--s2);
+  border:1px solid var(--bd);border-radius:var(--r);
+  padding:7px 12px;margin-bottom:10px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.srch-wrap:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,110,86,.1)}
+.srch-wrap input{
+  border:none;background:transparent;color:var(--t1);
+  font-size:13px;outline:none;width:100%;
+  font-family:var(--font);letter-spacing:-.01em;
+}
+.srch-wrap input::placeholder{color:var(--t4)}
+.srch-wrap i{color:var(--t4);font-size:15px;flex-shrink:0}
+.srch-clear{background:none;border:none;cursor:pointer;color:var(--t4);padding:0;display:flex;align-items:center;font-size:14px;transition:color .1s}
+.srch-clear:hover{color:var(--t1)}
+
+/* ── Filter chips ── */
+.chips-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.chip-btn{
+  padding:3px 10px;font-size:11px;font-weight:500;
+  border-radius:20px;border:1px solid var(--bd);
+  cursor:pointer;color:var(--t2);background:var(--s);
+  font-family:var(--font);transition:border-color .1s,color .1s,background .1s;
+  white-space:nowrap;letter-spacing:-.005em;
+}
+.chip-btn:hover{border-color:var(--bd2);color:var(--t1)}
+.chip-btn.on{color:#fff;border-color:transparent}
+
+/* ── Stage headers ── */
+.sg-hdr{display:flex;align-items:center;gap:7px;margin:16px 0 7px}
+.sg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sg-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+.sg-ct{font-size:10px;color:var(--t4);font-weight:400}
+.sg-line{flex:1;height:1px;background:var(--bd)}
+
+/* ── Event rows ── */
+.ev{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:var(--r);
+  border:1px solid var(--bd);border-left-width:3px;
+  background:var(--s);cursor:pointer;margin-bottom:4px;
+  font-family:var(--font);width:100%;text-align:left;
+  transition:background .1s,border-color .1s,box-shadow .1s;
+  box-shadow:var(--shadow-sm);
+}
+.ev:hover{background:var(--s2);border-color:var(--bd2);box-shadow:var(--shadow-md)}
+.ev-n{
+  font-size:10px;min-width:19px;height:19px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:600;flex-shrink:0;font-family:var(--mono);
+}
+.ev-lbl{flex:1;font-size:12.5px;font-weight:500;color:var(--t1);line-height:1.35;text-align:left;letter-spacing:-.01em}
+.ev-pre{
+  font-size:10px;padding:1px 6px;border-radius:20px;
+  background:#FEF3C7;color:#92400E;font-weight:600;
+  flex-shrink:0;border:1px solid #FDE68A;
+}
+.ev-ft{font-size:10px;padding:1px 7px;border-radius:20px;color:#fff;font-weight:500;flex-shrink:0}
+.count-note{font-size:11px;color:var(--t3);margin-bottom:8px;font-weight:500;letter-spacing:.01em}
+
+/* ── Legend ── */
+.legend{
+  background:var(--s2);border:1px solid var(--bd);
+  border-radius:var(--r);padding:10px 14px;margin-bottom:12px;
+}
+.legend-ttl{font-size:10px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.legend-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:5px;align-items:center}
+.legend-row:last-child{margin-bottom:0}
+.legend-lbl{font-size:10px;color:var(--t4);margin-right:4px;font-weight:500}
+.lbadge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;color:#fff;display:inline-block;letter-spacing:.01em}
+.lchip{font-size:11px;padding:2px 9px;border-radius:20px;font-weight:500;color:#fff;display:inline-block;margin:1px}
+
+/* ── Detail panel ── */
+.back{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12px;color:var(--t2);background:none;border:none;
+  cursor:pointer;padding:0;margin-bottom:12px;
+  font-family:var(--font);font-weight:500;
+  transition:color .1s;
+}
+.back:hover{color:var(--teal)}
+.prog-bar-wrap{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;background:var(--s2);
+  border-radius:var(--r);border:1px solid var(--bd);margin-bottom:12px;
+}
+.prog-track{flex:1;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px;transition:width .3s ease}
+.prog-lbl{font-size:11px;color:var(--t3);font-weight:500;white-space:nowrap;font-family:var(--mono)}
+.det-card{border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden;box-shadow:var(--shadow-md)}
+.det-head{padding:1rem 1.25rem;border-bottom:1px solid var(--bd)}
+.det-title{font-size:15px;font-weight:600;color:var(--t1);line-height:1.4;letter-spacing:-.02em}
+
+/* ── Where to click ── most prominent element in detail panel ── */
+.click-block{
+  border-radius:var(--r);
+  padding:12px 15px 12px 18px;margin-bottom:10px;
+  position:relative;overflow:hidden;
+  border:1.5px solid transparent;
+}
+.click-block::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:4px;border-radius:0;
+}
+.click-block-lbl{
+  font-size:10px;font-weight:700;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px;
+  display:flex;align-items:center;gap:5px;
+}
+.click-block-val{
+  font-size:15px;font-weight:700;line-height:1.3;letter-spacing:-.02em;
+}
+
+.det-divider{height:1px;background:var(--bd);margin:10px 0}
+.det-section-lbl{font-size:9.5px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.09em;margin-bottom:7px;margin-top:2px}
+.det-body{padding:1.25rem}
+.iblock{
+  background:var(--s2);border-radius:var(--r);
+  padding:9px 12px;margin-bottom:8px;border:1px solid var(--bd);
+}
+.iblock-lbl{
+  font-size:10px;font-weight:600;color:var(--t4);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;
+}
+.iblock-val{font-size:13px;color:var(--t1);font-weight:500;line-height:1.4;letter-spacing:-.01em}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+
+/* ── Signal boxes ── */
+.signal{border-radius:var(--r);padding:10px 13px;margin-bottom:8px;font-size:12.5px;line-height:1.7;letter-spacing:-.01em}
+.signal.pre{background:#FFFBEB;border:1px solid #FDE68A;color:#78350F}
+.signal.go{background:#F0FDF4;border:1px solid #BBF7D0;color:#14532D}
+.signal.nxt{background:#EFF6FF;border:1px solid #BFDBFE;color:#1E3A5F}
+.signal.wrn{background:#FFF7ED;border:1px solid #FED7AA;color:#7C2D12}
+.signal-ttl{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.07em;margin-bottom:5px;
+  display:flex;align-items:center;gap:5px;opacity:.7;
+}
+.signal ul{margin:3px 0 0 16px}
+.signal li{margin-bottom:3px}
+
+/* ── Flags ── */
+.flag-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.flag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;padding:3px 9px;border-radius:20px;
+  font-weight:500;border:1px solid;
+}
+.staff-chip{
+  display:inline-flex;align-items:center;
+  font-size:11px;padding:2px 9px;border-radius:20px;
+  font-weight:500;color:#fff;margin:2px;
+}
+
+/* ── What happened ── */
+.wh-hero{
+  background:linear-gradient(135deg,var(--teal-lt) 0%,var(--s) 100%);
+  border:1px solid var(--teal-md);
+  border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem;
+}
+.wh-hero-ttl{
+  font-size:11px;font-weight:700;color:var(--teal);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.wh-inp-wrap{
+  display:flex;align-items:center;gap:9px;
+  background:var(--s);border:1px solid var(--bd2);
+  border-radius:var(--r);padding:9px 13px;
+  transition:border-color .15s,box-shadow .15s;
+  box-shadow:var(--shadow-sm);
+}
+.wh-inp-wrap:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,110,86,.12)}
+.wh-inp-wrap input{
+  border:none;background:transparent;color:var(--t1);
+  font-size:13px;outline:none;width:100%;
+  font-family:var(--font);font-weight:500;letter-spacing:-.01em;
+}
+.wh-inp-wrap input::placeholder{color:var(--t4);font-weight:400}
+.wh-hint{font-size:11px;color:var(--t2);margin-top:7px;opacity:.75}
+.wh-suggestions{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.wh-sug{
+  font-size:11px;padding:3px 10px;border-radius:20px;
+  border:1px solid var(--teal-md);color:var(--teal);
+  background:rgba(15,110,86,.05);cursor:pointer;
+  font-family:var(--font);font-weight:500;
+  transition:background .1s,border-color .1s;
+}
+.wh-sug:hover{background:var(--teal-lt);border-color:var(--teal)}
+.wh-result{
+  background:var(--s);border:1px solid var(--bd);
+  border-radius:var(--rl);padding:1rem;margin-bottom:8px;
+  border-top-width:3px;box-shadow:var(--shadow-sm);
+  transition:box-shadow .1s;
+}
+.wh-result:hover{box-shadow:var(--shadow-md)}
+.wh-result-hdr{display:flex;align-items:center;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+.wh-peek-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;padding:5px 11px;border-radius:var(--r);
+  border:1px solid var(--bd2);cursor:pointer;
+  background:var(--s2);color:var(--t2);
+  font-family:var(--font);font-weight:500;margin-top:4px;
+  transition:border-color .1s,color .1s,background .1s;
+}
+.wh-peek-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-lt)}
+
+/* ── Quick ref ── */
+.qr-stage{margin-bottom:1.25rem}
+.qr-hdr{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 12px;border-radius:var(--r);color:#fff;
+  font-size:12px;font-weight:600;margin-bottom:5px;
+  letter-spacing:-.01em;
+}
+.qr-row{
+  display:flex;align-items:center;gap:7px;padding:6px 10px;
+  border-radius:var(--r);border:1px solid var(--bd);border-left-width:3px;
+  background:var(--s);margin-bottom:3px;cursor:pointer;
+  font-family:var(--font);width:100%;text-align:left;
+  transition:background .1s,box-shadow .1s;box-shadow:var(--shadow-sm);
+}
+.qr-row:hover{background:var(--s2);box-shadow:var(--shadow-md)}
+.qr-n{
+  font-size:10px;min-width:17px;height:17px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:600;flex-shrink:0;font-family:var(--mono);
+}
+.qr-ev{flex:1;font-size:12px;color:var(--t1);font-weight:500;letter-spacing:-.01em}
+
+/* ── Concepts / Rules / Mistakes / TS ── */
+.concept{
+  background:var(--s);border:1px solid var(--bd);
+  border-radius:var(--rl);padding:1rem 1.25rem;
+  margin-bottom:8px;box-shadow:var(--shadow-sm);
+}
+.concept-n{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--navy);color:#fff;font-size:11px;
+  font-weight:600;margin-bottom:7px;font-family:var(--mono);
+}
+.concept-ttl{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px;letter-spacing:-.015em}
+.concept-def{font-size:12.5px;color:var(--t2);line-height:1.7;margin-bottom:8px}
+.concept-ex{background:var(--s2);border-radius:var(--r);padding:7px 11px;border:1px solid var(--bd)}
+.concept-ex-lbl{
+  font-size:10px;font-weight:600;color:var(--t4);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;
+}
+.concept-ex-val{font-size:11.5px;color:var(--t2);line-height:1.6;font-family:var(--mono)}
+.rule{
+  display:flex;gap:10px;padding:10px 14px;
+  background:var(--s);border:1px solid var(--bd);
+  border-radius:var(--r);margin-bottom:6px;
+  box-shadow:var(--shadow-sm);
+}
+.rule-n{
+  min-width:24px;height:24px;border-radius:50%;
+  background:var(--teal);color:#fff;
+  font-size:11px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;font-family:var(--mono);
+}
+.rule-t{font-size:12.5px;font-weight:600;color:var(--t1);margin-bottom:2px;letter-spacing:-.015em}
+.rule-d{font-size:12.5px;color:var(--t2);line-height:1.65}
+.mk{
+  background:var(--s);border:1px solid var(--bd);border-left-width:3px;
+  border-radius:var(--r);padding:9px 13px;margin-bottom:5px;
+  box-shadow:var(--shadow-sm);
+}
+.mk-ev{
+  font-size:10px;font-weight:600;color:var(--t4);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;
+}
+.mk-tx{font-size:12.5px;color:#B91C1C;line-height:1.55;font-weight:500;letter-spacing:-.01em}
+.ts{
+  background:var(--s);border:1px solid var(--bd);
+  border-radius:var(--r);padding:10px 14px;margin-bottom:6px;
+  box-shadow:var(--shadow-sm);
+}
+.ts-p{
+  font-size:12.5px;font-weight:600;color:var(--t1);
+  display:flex;align-items:center;gap:6px;margin-bottom:7px;
+  letter-spacing:-.015em;
+}
+.ts-g{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ts-c{background:var(--s2);border-radius:var(--r);padding:7px 10px;border:1px solid var(--bd)}
+.ts-cl{
+  font-size:10px;font-weight:600;color:var(--t4);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;
+}
+.ts-cv{font-size:12px;color:var(--t2);line-height:1.55}
+
+/* ── Utility ── */
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--t4)}
+.empty i{font-size:28px;display:block;margin-bottom:8px;opacity:.3}
+.info-note{
+  font-size:12px;color:var(--t3);padding:8px 12px;
+  background:var(--s2);border-radius:var(--r);border:1px solid var(--bd);
+  margin-bottom:14px;display:flex;align-items:center;gap:7px;
+}
+.footer{text-align:center;font-size:11px;color:var(--t4);margin-top:1.25rem;font-weight:500;letter-spacing:.02em}
+
+/* ── Print styles ── */
+@media print{
+  body{background:#fff;padding:0}
+  .wrap{max-width:100%}
+  .hdr,.app,.footer{box-shadow:none;border:none}
+  .sb{display:none}
+  .app-layout{grid-template-columns:1fr}
+  .app{border:none}
+}
+
+/* ── Responsive ── */
+@media(max-width:680px){
+  body{padding:1rem .5rem 2rem}
+  .app-layout{grid-template-columns:1fr}
+  .sb{border-right:none;border-bottom:1px solid var(--bd)}
+  .hdr-pills{display:none}
+  .igrid{grid-template-columns:1fr}
+  .ts-g{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <img class="hdr-logo"
+    src="https://www.ibislegacylaw.com/wp-content/uploads/2022/09/Ibis-Legacy-Law-Logo.png"
+    alt="Ibis Legacy Law"
+    onerror="this.style.display='none';document.getElementById('hfb').style.display='flex'">
+  <div id="hfb" class="hdr-fb"><i class="ti ti-scale"></i></div>
+  <div class="hdr-text">
+    <h1>Monday.com Workflow Navigator</h1>
+    <p>Ibis Legacy Law LLC &nbsp;&middot;&nbsp; Verified against 110 live automations &nbsp;&middot;&nbsp; May 2026</p>
+  </div>
+  <div class="hdr-pills">
+    <div class="hdr-pill"><i class="ti ti-circle-check" style="font-size:12px;color:var(--teal)"></i>110 automations</div>
+    <div class="hdr-pill"><i class="ti ti-list-check" style="font-size:12px;color:var(--t3)"></i>65 events</div>
+  </div>
+</div>
+
+<div class="app">
+  <div class="app-layout">
+    <nav class="sb" id="SB"></nav>
+    <div id="PANE"></div>
+  </div>
+</div>
+
+<div class="footer">Ibis Legacy Law LLC &nbsp;&middot;&nbsp; Internal Use Only &nbsp;&middot;&nbsp; May 2026</div>
+</div>
+
+<script>
+var SG=[
+  {id:'lead',lbl:'Lead / Consult',c:'#7E57C2'},
+  {id:'fee',lbl:'Fee Agreement',c:'#00838F'},
+  {id:'draft',lbl:'Drafting / Review',c:'#F4511E'},
+  {id:'sign',lbl:'Review & Sign',c:'#0F7B3F'},
+  {id:'post',lbl:'Post-Sign',c:'#D81B60'},
+  {id:'hyg',lbl:'Other / Hygiene',c:'#455A64'},
+];
+var FT={
+  substatus:{bg:'#1E88E5',l:'Substatus'},
+  status:{bg:'#43A047',l:'Status'},
+  column:{bg:'#6A1B9A',l:'Column / Upload'},
+  auto:{bg:'#546E7A',l:'Automatic'},
+};
+var SC={
+  'Complete':'#43A047','Needs Revisions':'#212121','Needs Assignment / Remove if Not Needed':'#CE93D8',
+  'To Do':'#29B6F6','Ready to Schedule Consult':'#F48FB1','Consult Scheduled':'#9C8FD9',
+  'Consult Completed':'#F48FB1','Consult Fee Paid':'#FB8C00','Questionnaire Complete':'#A0785A',
+  'Drafting Fee Agt.':'#E53935','RYP Reviewing Fee Agt.':'#7B1FA2',
+  'Fee Agt. Ready for Client Review':'#0097A7','Fee Agt. Sent to Client for Review':'#1E88E5',
+  'Fee Agt. Ready to Sign':'#C6B84B','Fee Agt. Sent for Signature':'#00838F','Fee Agt. Signed':'#00838F',
+  'Retainer Payment Requested':'#795548','Retainer Paid':'#26C6DA','Hired':'#E91E8C',
+  'Drafting EP':'#FF7043','EMM Reviewing':'#FF7043','RYP Reviewing EP Drafts':'#7B1FA2',
+  'EMM REVIEWING FEE AGT.':'#FF7043','RYP REVIEWING FEE AGT.':'#7B1FA2',
+  'EMM REVIEWING EP DRAFTS':'#FF7043','RYP REVIEWING EP DRAFTS':'#7B1FA2',
+  'Ready to Schedule R&S':'#F06292','R&S Scheduled':'#9E9E9E','EP READY TO PRINT':'#1B5E20',
+  'EP Signed':'#66BB6A','Final Payment Requested':'#F48FB1','Final Invoice Paid':'#42A5F5',
+  'Google Review Requested':'#795548','Binder Complete':'#E53935',
+  'DISENGAGED/NURTURE':'#9E9E9E','INQUIRY':'#7E57C2',
+};
+function sC(v){
+  if(!v)return'#546E7A';
+  if(SC[v])return SC[v];
+  var k=Object.keys(SC).find(function(k){return v.toLowerCase().includes(k.toLowerCase())||k.toLowerCase().includes(v.toLowerCase());});
+  return k?SC[k]:'#546E7A';
+}
+var STAFF={
+  'Eric':'#1565C0',
+  'Becky (Rebecca Price)':'#AD1457',
+  'Madeline':'#2E7D32',
+  'Susan':'#6A1B9A',
+  'Jackie (Jacqueline Conway)':'#C62828',
+  'Sheila (Sheila Scanlon)':'#00695C',
+  'Admin (Ibis_Admin)':'#37474F',
+};
+var ROLES=['All roles','Eric','Becky (Rebecca Price)','Madeline','Susan','Jackie (Jacqueline Conway)','Sheila (Sheila Scanlon)','Admin (Ibis_Admin)'];
+var SYNONYMS={
+  'fee agreement':['fee agt','fee agt.','fa','engagement letter'],
+  'fee agt':['fee agreement','fee agt.','fa'],
+  'fee agt.':['fee agreement','fee agt','fa'],
+  'retainer':['ret','payment','deposit'],
+  'consult':['consultation','meeting','appt','appointment','intro'],
+  'questionnaire':['intake','form','dv','decision vault'],
+  'hired':['hire','engagement','engaged','onboard'],
+  'drafting':['draft','drafts','writing','prepare'],
+  'review':['revise','revision','revisions','checking'],
+  'ep signed':['signing','signed','executed','signing meeting'],
+  'post-sign':['post sign','after signing','closeout','wrap up'],
+  'binder':['folder','pickup','pick up','documents'],
+  'google review':['review request','testimonial','feedback'],
+  'r&s':['review and sign','review & sign','signing meeting','r and s'],
+  'review and sign':['r&s','r & s','signing'],
+  'ryp':['becky','rebecca','rebecca price'],
+  'emm':['eric','eric meleney','attorney review'],
+  'becky':['ryp','rebecca','rebecca price'],
+  'eric':['emm','attorney','meleney'],
+  'sheila':['sheila scanlon','scanlon'],
+  'jackie':['jacqueline','jacqueline conway','conway','billing'],
+  'madeline':['paralegal','drafter'],
+  'waiting':['on hold','hold','pending','stale'],
+  'disengaged':['nurture','cold','lost','not moving'],
+  'mycase':['my case','portal'],
+  'wealthcounsel':['wealth counsel','wc'],
+  'client snapshot':['snapshot','profile'],
+  'overdue':['late','past due','behind','delayed'],
+  'reminder':['follow up','follow-up','check in','check-in'],
+  'complete':['done','finished','completed','marked done'],
+  'upload':['attach','file','document'],
+};
+var WH_SUGGESTIONS=['retainer paid','fee agt signed','consult done','signed docs','ep signed','hired','questionnaire complete','binder ready'];
+
+var EV=[
+  {id:1,sg:'lead',st:1,ev:'New lead is created',fi:'New Client via form — Complete Intake',ft:'column',va:'N/A (form completion)',au:'Creates 3 subitems (15-Min Intro Call, MyCase Lead Created, Consultation); sets Status to INQUIRY; stamps Inquiry Date and Lead Created_Date; notifies Sheila Scanlon; creates an update.',no:'Sheila (Sheila Scanlon)',ro:['Sheila (Sheila Scanlon)'],em:false,ds:'Inquiry Date / Lead Created_Date',mi:'Manually creating duplicate lead subitems — they are created automatically',pre:[],nx:'Mark the 15-Minute Intro Call subitem Complete, then create the MyCase lead and mark that subitem Complete.'},
+  {id:2,sg:'lead',st:2,ev:'Intro call is complete',fi:'15-Minute Intro Call subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:[],em:false,ds:null,mi:'Forgetting to update the call outcome',pre:[],nx:'Create the MyCase lead and mark the MyCase Lead Created subitem Complete.'},
+  {id:3,sg:'lead',st:3,ev:'MyCase lead is created',fi:'MyCase Lead Created subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:[],em:false,ds:null,mi:'Assuming MyCase setup is complete without marking it',pre:[],nx:'Change the Consultation subitem to Ready to Schedule Consult.'},
+  {id:4,sg:'lead',st:4,ev:'Consult is ready to schedule',fi:'Consultation subitem',ft:'substatus',va:'Ready to Schedule Consult',au:'Tracking milestone only — no automation fires on this specific substatus.',no:'N/A',ro:[],em:false,ds:null,mi:'N/A',pre:[],nx:'Enter the Consultation Date in the Consult Date Column FIRST, then change the Consultation subitem to Consult Scheduled.'},
+  {id:5,sg:'lead',st:5,ev:'Consult date is being entered',fi:'Consult Date Column',ft:'column',va:'Manually input date',au:'N/A — data entry only. This date drives all 48-hour reminder automations and the 24-hour staff reminder. Must be entered BEFORE changing substatus to Consult Scheduled.',no:'N/A',ro:[],em:false,ds:'Consult Date',mi:'Forgetting to enter Consultation Date BEFORE changing substatus — all reminders depend on this date',pre:[],nx:'After entering the date, change the Consultation subitem to Consult Scheduled.'},
+  {id:6,sg:'lead',st:6,ev:'Consult is scheduled',fi:'Consultation subitem',ft:'substatus',va:'Consult Scheduled',au:'Sets Status to CONSULT SCHEDULED (if item in LEADS). Creates 2 subitems (Consult Fee, Questionnaire). Notifies Jackie (Jacqueline Conway). Creates an update. Sends consult scheduled email — individual if Client 2 Email empty, couple if present. Stamps Consult Scheduled Email Sent flag.',no:'Jackie (Jacqueline Conway)',ro:['Jackie (Jacqueline Conway)'],em:true,ds:'Consult Scheduled Email Sent flag',mi:'Forgetting to enter Consultation Date BEFORE changing substatus — all reminder automations depend on that date',pre:['Enter the Consultation Date in the Consult Date Column BEFORE triggering this substatus.'],nx:'Sheila is notified 24 hours before the consult to provide the questionnaire to the attorney. Ensure Consult Fee is paid and Questionnaire is complete before the consult occurs.'},
+  {id:7,sg:'lead',st:7,ev:'48-hour consultation reminder fires (date-driven)',fi:'Consultation Date — automatic',ft:'auto',va:'Automatic',au:'Fires 48 hours before Consultation Date. Sends email — 4 variants: individual with questionnaire complete, individual without questionnaire, couple with questionnaire complete, couple without questionnaire. Sheila Scanlon notified 24 hours before to provide questionnaire to attorney.',no:'Sheila (Sheila Scanlon) — 24hr staff reminder',ro:['Sheila (Sheila Scanlon)'],em:true,ds:'Based on Consultation Date',mi:'Wrong or missing Consultation Date causes wrong timing or no reminder at all',pre:['Consultation Date must be entered before changing substatus to Consult Scheduled.'],nx:'Conduct the consultation. Afterward change the Consultation subitem to Consult Completed.'},
+  {id:8,sg:'lead',st:8,ev:'Consult fee is received (if applicable)',fi:'Consult Fee subitem',ft:'substatus',va:'Consult Fee Paid',au:'Creates an update confirming fee paid. No client email.',no:'N/A',ro:[],em:false,ds:null,mi:'Leaving consult fee unresolved when consult is coming up',pre:[],nx:'Confirm the Questionnaire is complete, then proceed to the consultation.'},
+  {id:9,sg:'lead',st:9,ev:'Questionnaire is complete',fi:'Questionnaire subitem',ft:'substatus',va:'Questionnaire Complete',au:'Creates Client Snapshot subitem. Notifies Sheila Scanlon and Eric Meleney. Creates an update. Sends questionnaire complete email — individual or couple variant. Stamps Questionnaire Complete Email Sent flag.',no:'Sheila (Sheila Scanlon) / Eric',ro:['Sheila (Sheila Scanlon)','Eric'],em:true,ds:'Questionnaire Complete Email Sent flag',mi:'Changing main Status instead of questionnaire subitem',pre:[],nx:'Create the Client Snapshot and mark that subitem Complete.'},
+  {id:10,sg:'lead',st:10,ev:'Client Snapshot is created',fi:'Client Snapshot subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:[],em:false,ds:null,mi:'Forgetting to create the snapshot and upload it',pre:[],nx:'Proceed to the consultation. Afterward change Consultation subitem to Consult Completed.'},
+  {id:11,sg:'lead',st:11,ev:'Consultation occurs',fi:'Consultation subitem',ft:'substatus',va:'Consult Completed',au:'Two automations fire (from Ready to Schedule Consult → Consult Completed, and from Consult Scheduled → Consult Completed). Both: set Status to CONSULT COMPLETED; move to FEE AGREEMENT group; create Fee Agreement subitem; notify Eric Meleney; create update. Stamps Lead Converted to Completed Consult_Date. Sends consult completed / next steps email — individual or couple variant.',no:'Eric',ro:['Eric'],em:true,ds:'Lead Converted to Completed Consult_Date',mi:'Marking consult complete before the meeting actually happened — will prematurely send next-steps email to client',pre:['Consultation must have actually occurred.','Client Snapshot should be created and complete.'],nx:'Matter moves to FEE AGREEMENT group. Change the Fee Agreement subitem to Drafting Fee Agt. to begin drafting.'},
+  {id:12,sg:'lead',st:12,ev:'Lead is stale / not moving forward',fi:'Main item Status',ft:'status',va:'DISENGAGED/NURTURE',au:'Manually moving creates an update. Date-driven: 6 months after Inquiry Date, if item is in LEADS and Hired Date is empty — moves to DISENGAGED – NURTURE, notifies Ibis_Admin, sets Status to DISENGAGED/NURTURE, creates update.',no:'Admin (Ibis_Admin)',ro:['Admin (Ibis_Admin)'],em:false,ds:null,mi:'Moving a lead to nurture while active follow-up is still pending',pre:['Confirm no active follow-up is pending.'],nx:'Matter moves to DISENGAGED – NURTURE. Long-term nurture sequence applies.'},
+  {id:13,sg:'fee',st:1,ev:'Fee Agreement drafting assigned',fi:'Fee Agreement subitem',ft:'substatus',va:'Drafting Fee Agt.',au:'Substatus from Needs Assignment → Drafting Fee Agt. while in FEE AGREEMENT: sets Status to DRAFTING FEE AGT.; notifies assigned drafter (Responsible Staff); creates update. Separately: Status → DRAFTING FEE AGT. sets Drafting Fee Agreement Start Date to today. Note: Sheila is notified if the Drafting Fee Agreement Start Date passes while Status is still DRAFTING FEE AGT.',no:'Assigned drafter (Responsible Staff)',ro:['Madeline','Eric'],em:false,ds:'Drafting Fee Agreement Start Date',mi:'Starting drafting without changing the substatus — the status change and date stamp depend on the substatus trigger',pre:['Assign Responsible Staff on the Fee Agreement subitem BEFORE triggering.'],nx:'Draft the Fee Agreement. When ready for Eric\'s review, change substatus to EMM Reviewing — this sets Status to EMM REVIEWING FEE AGT. and notifies Eric. When Eric approves, change substatus to RYP Reviewing Fee Agt. for Becky\'s review.'},
+  {id:14,sg:'fee',st:2,ev:'Fee Agreement sent to Becky for review',fi:'Fee Agreement subitem',ft:'substatus',va:'RYP Reviewing',au:'Substatus → RYP Reviewing while in FEE AGREEMENT: notifies Rebecca Price (Becky); creates update; stamps Date RYP Notified to Review Fee Agt. Draft to today; sets Status to RYP REVIEWING FEE AGT. Date-driven: when Date RYP Notified to Review Fee Agt. Draft arrives and Status is not FEE AGT. SENT TO CLIENT FOR REVIEW (or other post-review statuses), Becky is automatically reminded the review is still waiting.',no:'Becky (Rebecca Price)',ro:['Becky (Rebecca Price)'],em:false,ds:'Date RYP Notified to Review Fee Agt. Draft',mi:'Using the wrong substatus name — the substatus is RYP Reviewing, not RYP Reviewing Fee Agt. or RYP Reviewing EP Drafts. The same substatus name behaves differently depending on which group the matter is in.',pre:['Fee Agreement draft must be ready for Becky\'s review before triggering.'],nx:'Becky reviews. If revisions needed → Needs Revisions. If approved → Fee Agt. Ready for Client Review. Note: EMM Reviewing and RYP Reviewing are independent — neither is a prerequisite for the other.'},
+  {id:140,sg:'fee',st:3,ev:'Fee Agreement sent to Eric for review',fi:'Fee Agreement subitem',ft:'substatus',va:'EMM Reviewing',au:'Substatus → EMM Reviewing while in FEE AGREEMENT: sets Status to EMM REVIEWING FEE AGT. Status change to EMM REVIEWING FEE AGT. then notifies Eric Meleney and creates an update.',no:'Eric',ro:['Eric'],em:false,ds:null,mi:'Changing the substatus without the draft being ready — the status change and Eric notification fire immediately on trigger',pre:['Fee Agreement draft must be complete and ready for Eric\'s review before triggering.'],nx:'Eric reviews. If revisions needed → Needs Revisions. Note: EMM Reviewing and RYP Reviewing are independent — Becky\'s review via RYP Reviewing can occur separately and does not require Eric to go first.'},
+  {id:15,sg:'fee',st:4,ev:'Fee Agreement needs revisions',fi:'Fee Agreement subitem',ft:'substatus',va:'Needs Revisions',au:'When item is in FEE AGREEMENT: notifies assigned drafter (Responsible Staff); creates update.',no:'Assigned drafter (Responsible Staff)',ro:['Madeline','Eric'],em:false,ds:null,mi:'Making edits without moving the substatus back to Needs Revisions',pre:[],nx:'Revise the Fee Agreement, then change substatus back to RYP Reviewing or EMM Reviewing as appropriate for re-review.'},
+  {id:16,sg:'fee',st:5,ev:'Fee Agreement ready for client review prep',fi:'Fee Agreement subitem',ft:'substatus',va:'Fee Agt. Ready for Client Review',au:'Notifies Sheila Scanlon to upload the approved agreement to the Fee Agreement Column.',no:'Sheila (Sheila Scanlon)',ro:['Sheila (Sheila Scanlon)'],em:false,ds:null,mi:'Triggering before Becky has approved — Sheila will be notified prematurely',pre:['Becky must have approved the Fee Agreement before triggering this.'],nx:'Sheila uploads the approved agreement to the Fee Agreement Column.'},
+  {id:17,sg:'fee',st:6,ev:'Fee Agreement document is being uploaded',fi:'Fee Agreement Column',ft:'column',va:'Manually upload Fee Agreement to Fee Agreement Column',au:'No automation fires on upload itself — but the upload is required BEFORE the next substatus change will attach the document to the client email.',no:'N/A',ro:['Sheila (Sheila Scanlon)'],em:false,ds:null,mi:'Changing substatus to Sent to Client for Review BEFORE uploading — the client email attaches the Fee Agreement column value; if empty, email sends without the attachment',pre:['Upload the document to the Fee Agreement Column before triggering the next substatus.'],nx:'After uploading, change the Fee Agreement subitem to Fee Agt. Sent to Client for Review.'},
+  {id:18,sg:'fee',st:7,ev:'Fee Agreement sent to client for review',fi:'Fee Agreement subitem',ft:'substatus',va:'Fee Agt. Sent to Client for Review',au:'Substatus → Fee Agt. Sent to Client for Review: moves to FEE AGREEMENT group; sets Status to FEE AGT. SENT TO CLIENT FOR REVIEW. Status change: creates Update Client Snapshot subitem; notifies Eric Meleney; sends client email with Fee Agreement attached (individual or couple); stamps Date Fee Agt. Sent to Client for Review; stamps Fee Agt. Sent For Review Email Sent flag. Date-driven: 2-week client check-in and 1-month Sheila check-in fire automatically.',no:'Eric',ro:['Eric'],em:true,ds:'Date Fee Agt. Sent to Client for Review; Fee Agt. Sent For Review Email Sent flag',mi:'Sending before Fee Agreement is uploaded to the Fee Agreement Column — email sends without the attachment',pre:['Fee Agreement must be uploaded to the Fee Agreement Column before triggering.'],nx:'Await client approval. 2-week client check-in and 1-month staff check-in to Sheila fire automatically. When client approves → Fee Agt. Ready to Sign.'},
+  {id:19,sg:'fee',st:8,ev:'Client approves Agreement for signature',fi:'Fee Agreement subitem',ft:'substatus',va:'Fee Agt. Ready to Sign',au:'Notifies Sheila Scanlon. Creates update.',no:'Sheila (Sheila Scanlon)',ro:['Sheila (Sheila Scanlon)'],em:false,ds:null,mi:'Sending for signature without confirming client approval',pre:['Client must have confirmed approval before triggering.'],nx:'Send the Fee Agreement for e-signature via MyCase, then change the subitem to Fee Agt. Sent for Signature.'},
+  {id:20,sg:'fee',st:9,ev:'Fee Agreement sent for e-signature via MyCase',fi:'Fee Agreement subitem',ft:'substatus',va:'Fee Agt. Sent for Signature',au:'Substatus → Fee Agt. Sent for Signature: sets Status to FEE AGT. SENT FOR SIGNATURE; stamps Date Fee Agt. Sent to Client for Signature; creates update. Status change: moves to FEE AGREEMENT group; creates 2 subitems (Retainer, Hired); notifies Eric Meleney and Jackie. Date-driven: 2-week client check-in and 1-month Sheila check-in fire automatically.',no:'Eric / Jackie (Jacqueline Conway)',ro:['Eric','Jackie (Jacqueline Conway)'],em:false,ds:'Date Fee Agt. Sent to Client for Signature',mi:'CRITICAL: Monday does NOT send the e-sign request. Staff must send it through MyCase separately before changing this substatus.',pre:['Confirm the e-signature request was actually sent through MyCase BEFORE changing this substatus.'],nx:'Update Pre-Hire Client Snapshot to Complete. Await signed agreement and retainer. 2-week client check-in and 1-month Sheila check-in fire automatically.'},
+  {id:21,sg:'fee',st:10,ev:'Pre-hire Client Snapshot updated',fi:'Update Client Snapshot Pre-Hire subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:[],em:false,ds:null,mi:'Forgetting to update snapshot before hiring',pre:[],nx:'Await signed agreement and retainer payment.'},
+  {id:22,sg:'fee',st:11,ev:'Signed Fee Agreement received — uploading',fi:'Fee Agreement Column',ft:'column',va:'Manually upload Signed Agreement to Fee Agreement Column',au:'No automation fires on upload itself — required before or when marking Fee Agt. Signed.',no:'N/A',ro:['Sheila (Sheila Scanlon)','Jackie (Jacqueline Conway)'],em:false,ds:null,mi:'Forgetting to upload the signed agreement to the column',pre:['Signed agreement must be physically received before uploading.'],nx:'After uploading, change the Fee Agreement subitem to Fee Agt. Signed.'},
+  {id:23,sg:'fee',st:12,ev:'Signed Fee Agreement received — confirming',fi:'Fee Agreement subitem',ft:'substatus',va:'Fee Agt. Signed',au:'Creates a new subitem. Notifies Jackie (Jacqueline Conway) and Sheila Scanlon. Creates update. If Retainer substatus NOT already Retainer Paid: sets Status to WAITING FOR RETAINER; stamps Waiting for Retainer Start Date.',no:'Jackie (Jacqueline Conway) / Sheila (Sheila Scanlon)',ro:['Jackie (Jacqueline Conway)','Sheila (Sheila Scanlon)'],em:false,ds:'Waiting for Retainer Start Date (if retainer not yet paid)',mi:'Marking Hired when retainer has not been paid yet',pre:['Signed agreement must be uploaded to the Fee Agreement Column before or at the time you trigger this.'],nx:'If retainer not yet paid, change Retainer subitem to Retainer Payment Requested. Once both are confirmed, mark Hired subitem as Hired.'},
+  {id:24,sg:'fee',st:13,ev:'Retainer payment requested',fi:'Retainer subitem',ft:'substatus',va:'Retainer Payment Requested',au:'Creates update tracking the payment request. No client email.',no:'N/A',ro:['Jackie (Jacqueline Conway)'],em:false,ds:null,mi:'Forgetting to request payment after agreement is signed',pre:[],nx:'Await payment. When received, change Retainer subitem to Retainer Paid.'},
+  {id:25,sg:'fee',st:14,ev:'Retainer paid',fi:'Retainer subitem',ft:'substatus',va:'Retainer Paid',au:'Notifies Jackie (Jacqueline Conway). Creates update. If Fee Agreement substatus NOT already Fee Agt. Signed: sets Status to WAITING FOR RETAINER; stamps Waiting for Retainer Start Date. Date-driven: Jackie notified at 1 week and 1 month if status remains WAITING FOR RETAINER.',no:'Jackie (Jacqueline Conway)',ro:['Jackie (Jacqueline Conway)'],em:false,ds:'Waiting for Retainer Start Date (if signed agreement not yet received)',mi:'Marking Hired when the signed agreement has not been received',pre:['Do not mark Hired until both the signed Fee Agreement AND retainer are confirmed.'],nx:'Once both are confirmed, change the Hired subitem to Hired.'},
+  {id:26,sg:'draft',st:1,ev:'Matter is officially hired',fi:'Hired subitem',ft:'substatus',va:'Hired',au:'Moves item to DRAFTING / REVIEW group; sets Status to HIRED. Status → HIRED: notifies Eric Meleney and Jackie; creates 12 new subitems for drafting phase; creates update; stamps Hired Date; creates Drafting Due Date 6 weeks out; stamps Lead Converted to Client_Date. Sends welcome email — individual or couple variant. Stamps Hired Email Sent flag.',no:'Eric / Jackie (Jacqueline Conway)',ro:['Eric','Jackie (Jacqueline Conway)'],em:true,ds:'Hired Date; Drafting Due Date (6 weeks out); Lead Converted to Client_Date',mi:'Triggering Hired before both the signed Fee Agreement AND retainer are confirmed',pre:['Signed Fee Agreement must be uploaded to the Fee Agreement Column.','Retainer must be confirmed as paid.'],nx:'Update Post-Hired Client Snapshot to Complete. Sync DV to WealthCounsel and MyCase. Then begin drafting EP documents.'},
+  {id:27,sg:'draft',st:2,ev:'Post-hire Client Snapshot updated',fi:'Update Client Snapshot Post-Hired subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:[],em:false,ds:null,mi:'Forgetting to update snapshot after hiring',pre:[],nx:'Sync DV to WealthCounsel and MyCase, then begin drafting.'},
+  {id:28,sg:'draft',st:3,ev:'DV synced to WealthCounsel and MyCase',fi:'Sync DV to WealthCounsel and MyCase subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:[],em:false,ds:null,mi:'Beginning drafting without syncing DV data first',pre:[],nx:'Begin drafting. Change each EP document subitem to Drafting EP and assign the responsible drafter.'},
+  {id:29,sg:'draft',st:4,ev:'Drafting begins on EP documents',fi:'Individual EP Docs subitems (Trust, Will, DPOA, HPOA, HIPAA, Deed, etc.)',ft:'substatus',va:'Drafting EP',au:'Substatus from Needs Assignment → Drafting EP while in DRAFTING / REVIEW: sets Status to DRAFTING EP. Status → DRAFTING EP: notifies Eric Meleney and assigned drafters; creates update.',no:'Eric / assigned drafters',ro:['Madeline','Eric'],em:false,ds:'Date Last Updated',mi:'Leaving matter at HIRED after drafting begins; not assigning documents to the responsible drafter before triggering',pre:['Assign Responsible Staff on each EP document subitem BEFORE triggering.'],nx:"Complete drafts, then change each document subitem to EMM Reviewing for Eric's review."},
+  {id:30,sg:'draft',st:5,ev:'Eric needs to review document(s)',fi:'Individual EP Docs subitems',ft:'substatus',va:'EMM Reviewing',au:'Substatus → EMM Reviewing while in DRAFTING / REVIEW: sets Status to EMM REVIEWING EP DRAFTS. Status change to EMM REVIEWING EP DRAFTS then notifies Eric Meleney and creates an update. Note: the same substatus name in FEE AGREEMENT triggers a different set of automations.',no:'Eric',ro:['Eric'],em:false,ds:'Date Last Updated',mi:'Using this substatus when the matter is in FEE AGREEMENT — the group determines which automation fires. Confirm the matter is in DRAFTING / REVIEW before triggering.',pre:['Documents must be ready for Eric\'s review before triggering.'],nx:'Eric reviews. If revisions needed → Needs Revisions. EMM Reviewing and RYP Reviewing are independent — Becky can be brought in separately via RYP Reviewing without waiting for Eric to complete his review.'},
+  {id:31,sg:'draft',st:6,ev:'Becky needs to review document(s)',fi:'Individual EP Docs subitems',ft:'substatus',va:'RYP Reviewing',au:'Substatus → RYP Reviewing while in DRAFTING / REVIEW: sets Status to RYP REVIEWING EP DRAFTS. Status change to RYP REVIEWING EP DRAFTS then notifies Rebecca Price (Becky) and creates an update. Note: the same substatus name in FEE AGREEMENT triggers a different set of automations.',no:'Becky (Rebecca Price)',ro:['Becky (Rebecca Price)'],em:false,ds:'Date Last Updated',mi:'Using the wrong substatus name — the substatus is RYP Reviewing, not RYP Reviewing EP Drafts. Also confirm the matter is in DRAFTING / REVIEW and not FEE AGREEMENT, as the same substatus fires different automations depending on the group.',pre:['Documents must be ready for Becky\'s review before triggering.'],nx:'Becky reviews. If approved, send Confirmation of Names and Fiduciaries email to client. Note: EMM Reviewing and RYP Reviewing are independent — Eric\'s review is not a prerequisite.'},
+  {id:32,sg:'draft',st:7,ev:'Drafts need revisions',fi:'Individual EP Docs subitems',ft:'substatus',va:'Needs Revisions',au:'When in DRAFTING / REVIEW: notifies assigned drafter (Responsible Staff); creates update.',no:'Assigned drafter (Responsible Staff)',ro:['Madeline','Eric'],em:false,ds:'Date Last Updated',mi:'Revising documents without changing substatus back to Needs Revisions',pre:[],nx:'Revise documents, then change back to EMM Reviewing or RYP Reviewing EP Drafts.'},
+  {id:33,sg:'draft',st:8,ev:'Drafting is overdue (date-driven)',fi:'Drafting Due Date — automatic',ft:'auto',va:'Automatic',au:'Fires when Drafting Due Date arrives, if Status is not in the not-hired group. Notifies Eric Meleney and staff. Creates update.',no:'Eric / staff as configured',ro:['Eric'],em:false,ds:'Based on Drafting Due Date (set 6 weeks from Hired Date)',mi:'Ignoring due date alerts — do not treat them as informational only',pre:[],nx:'Prioritize drafting and update the matter.'},
+  {id:34,sg:'draft',st:9,ev:'One-month post-hired check-in (date-driven)',fi:'Hired Date — automatic',ft:'auto',va:'Automatic',au:'Fires when Hired Date arrives (1 month later), if Status is NOT R&S SCHEDULED and item is in DRAFTING / REVIEW. Sends one-month post-hired check-in email — individual or couple variant.',no:'N/A (client email only)',ro:[],em:true,ds:'Based on Hired Date',mi:'Incorrect or missing Hired Date disrupts this check-in timing',pre:[],nx:'No action required unless client responds.'},
+  {id:35,sg:'draft',st:10,ev:'Names and fiduciaries email sent to client',fi:'Confirmation of Names and Fiduciaries subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires. Confirms the email was sent.',no:'N/A',ro:['Eric'],em:false,ds:'Date Last Updated',mi:'Proceeding to signing without confirming this step',pre:['Becky must have approved all EP drafts before this email goes out.'],nx:'Complete final QC. Change the Final EP Doc Quality Control subitem to Complete.'},
+  {id:36,sg:'draft',st:11,ev:'Final EP quality control complete',fi:'Final EP Doc Quality Control subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires. Confirms documents are attorney-approved and ready for signing.',no:'N/A',ro:['Eric','Madeline'],em:false,ds:'Date Last Updated',mi:'Printing or scheduling signing before QC is marked complete',pre:['Names and fiduciaries must be confirmed.','All documents must be attorney-approved.'],nx:'Change the Review and Sign subitem to Ready to Schedule R&S.'},
+  {id:37,sg:'sign',st:1,ev:'Matter is ready to schedule Review & Sign',fi:'Review and Sign subitem',ft:'substatus',va:'Ready to Schedule R&S',au:'Substatus → Ready to Schedule R&S while in DRAFTING / REVIEW: sets Status to R&S READY TO SCHEDULE; creates update. Status change: sends Ready to Schedule R&S email (individual or couple); stamps Ready to Schedule R&S Email Sent flag; stamps Date Client Notified EP Ready to Sign.',no:'Staff as configured',ro:['Eric','Sheila (Sheila Scanlon)'],em:true,ds:'Ready to Schedule R&S Email Sent; Date Client Notified EP Ready to Sign',mi:'Telling client docs are ready before attorney approval; forgetting to confirm email-sent flag',pre:['All EP documents must be attorney-approved.','Final QC subitem must be marked Complete.'],nx:'Enter the EP Signing Date in the EP Signing Date Column FIRST, then change Review and Sign subitem to R&S Scheduled. 2-week and 1-month follow-up reminders fire automatically.'},
+  {id:38,sg:'sign',st:2,ev:'EP Signing Date is being entered',fi:'EP Signing Date Column',ft:'column',va:'Manually input date',au:'No automation fires on entry — but this date drives ALL signing reminders: 48-hour client reminder, 1-week client reminder, 1-week attorney notification, and 3-month and 3-year post-sign check-ins. Must be entered BEFORE changing substatus to R&S Scheduled.',no:'N/A',ro:['Sheila (Sheila Scanlon)'],em:false,ds:'EP Signing Date (drives all subsequent reminder automations)',mi:'Not entering EP Signing Date BEFORE changing substatus to R&S Scheduled',pre:['Signing date must be confirmed with the client before entering.'],nx:'After entering the date, change the Review and Sign subitem to R&S Scheduled.'},
+  {id:39,sg:'sign',st:3,ev:'Review & Sign is scheduled',fi:'Review and Sign subitem',ft:'substatus',va:'R&S Scheduled',au:'Substatus from Ready to Schedule R&S → R&S Scheduled while in DRAFTING / REVIEW: sets Status to R&S SCHEDULED. Also triggers from Hold → R&S Scheduled. Status change: notifies Eric Meleney; sends R&S Scheduled email (individual or couple); stamps R&S Scheduled Email Sent flag.',no:'Eric',ro:['Eric'],em:true,ds:'R&S Scheduled Email Sent flag',mi:'Not entering EP Signing Date BEFORE changing substatus — all reminder automations depend on that date',pre:['EP Signing Date must be entered in the EP Signing Date Column BEFORE triggering this substatus.'],nx:'Prepare final documents for printing. When ready, change the main Status to EP READY TO PRINT.'},
+  {id:40,sg:'sign',st:4,ev:'Final documents are ready to print',fi:'Main item Status',ft:'status',va:'EP READY TO PRINT',au:'Status → EP READY TO PRINT: notifies Sheila Scanlon; moves item to READY FOR SIGNING group; creates update.',no:'Sheila (Sheila Scanlon)',ro:['Sheila (Sheila Scanlon)'],em:false,ds:'Date Last Updated',mi:'Marking ready to print before final attorney approval',pre:['Final attorney approval must be confirmed.','R&S must already be scheduled.'],nx:'Print and prepare documents. Conduct the Review & Sign meeting.'},
+  {id:41,sg:'sign',st:5,ev:'One week before signing — attorney notified (date-driven)',fi:'EP Signing Date — automatic',ft:'auto',va:'Automatic',au:'Fires when EP Signing Date arrives (1 week out), if Status is NOT EP READY TO PRINT. Notifies Eric Meleney and additional staff.',no:'Eric / staff',ro:['Eric','Jackie (Jacqueline Conway)'],em:false,ds:'Based on EP Signing Date',mi:'Wrong EP Signing Date causes wrong timing',pre:['EP Signing Date must be correctly entered.'],nx:'Confirm all documents are printed and ready.'},
+  {id:42,sg:'sign',st:6,ev:'One week before signing — client reminder (date-driven)',fi:'EP Signing Date — automatic',ft:'auto',va:'Automatic',au:'Fires when EP Signing Date arrives (1 week out). Notifies Eric Meleney and Jackie. Sends one-week reminder email — individual or couple variant.',no:'Eric / Jackie (Jacqueline Conway)',ro:['Eric','Jackie (Jacqueline Conway)'],em:true,ds:'Based on EP Signing Date',mi:'Wrong EP Signing Date sends reminder at wrong time',pre:['EP Signing Date must be correctly entered.'],nx:'Await the 48-hour reminder. Conduct the Review & Sign meeting.'},
+  {id:43,sg:'sign',st:7,ev:'48 hours before signing — client reminder (date-driven)',fi:'EP Signing Date — automatic',ft:'auto',va:'Automatic',au:'Fires 48 hours before EP Signing Date. Sends 48-hour confirmation reminder email — individual or couple variant.',no:'N/A (client email only)',ro:[],em:true,ds:'Based on EP Signing Date',mi:'Changing EP Signing Date after reminders are configured — disrupts all reminder timing',pre:['EP Signing Date must be correctly entered.'],nx:'Conduct the Review & Sign meeting. After signing, change the Review and Sign subitem to EP Signed.'},
+  {id:44,sg:'sign',st:8,ev:'Signing occurs — documents are signed',fi:'Review and Sign subitem',ft:'substatus',va:'EP Signed',au:'Substatus → EP Signed while in DRAFTING / REVIEW: sets Status to POST-SIGN IMPLEMENTATION; creates update. Status change: notifies Sheila Scanlon, Jackie, and Eric Meleney; moves to POST-SIGN IMPLEMENTATION group; creates 8 new post-sign subitems; creates update. Sends congratulations email — individual or couple variant. Stamps EP Signed - Congrats Email Sent flag. If Post-Signing Attorney Follow Up column is not empty, notifies Eric Meleney separately.',no:'Sheila (Sheila Scanlon) / Jackie (Jacqueline Conway) / Eric',ro:['Eric','Sheila (Sheila Scanlon)','Jackie (Jacqueline Conway)'],em:true,ds:'EP Signed - Congrats Email Sent flag',mi:'Marking EP Signed before signing actually occurred',pre:['Signing meeting must have actually occurred.','All documents must be physically signed before triggering.'],nx:'Matter moves to POST-SIGN IMPLEMENTATION. 8 subitems are created automatically. Work through all of them.'},
+  {id:45,sg:'post',st:1,ev:'Post-sign subitems created automatically',fi:'Automatic — triggered by EP Signed',ft:'auto',va:'Automatic',au:'8 post-sign subitems are created automatically when Status → POST-SIGN IMPLEMENTATION. Do not create them manually.',no:'N/A',ro:[],em:false,ds:null,mi:'Manually recreating post-sign subitems — they are created automatically',pre:[],nx:'Work through all post-sign subitems in order.'},
+  {id:46,sg:'post',st:2,ev:'Final payment requested',fi:'Final Invoice subitem',ft:'substatus',va:'Final Payment Requested',au:'Creates update tracking payment request. No client email.',no:'N/A',ro:['Jackie (Jacqueline Conway)'],em:false,ds:'Date Last Updated',mi:'Requesting final payment without updating Monday',pre:[],nx:'Await payment. When received, change to Final Invoice Paid.'},
+  {id:47,sg:'post',st:3,ev:'Final invoice paid',fi:'Final Invoice subitem',ft:'substatus',va:'Final Invoice Paid',au:'Notifies Jackie (Jacqueline Conway) to close file / continue closeout. Creates update.',no:'Jackie (Jacqueline Conway)',ro:['Jackie (Jacqueline Conway)'],em:false,ds:'Date Last Updated',mi:'Closing the file before payment is reflected in Monday',pre:['Payment must be confirmed before marking paid.'],nx:'Continue remaining post-sign closeout tasks.'},
+  {id:48,sg:'post',st:4,ev:'Google review requested',fi:'Google Review subitem',ft:'substatus',va:'Google Review Requested',au:'If Google Review Request Email Sent is empty: sends review request email (individual or couple); creates update; stamps Google Review Request Email Sent flag.',no:'N/A',ro:['Jackie (Jacqueline Conway)','Sheila (Sheila Scanlon)'],em:true,ds:'Google Review Request Email Sent',mi:'Requesting review twice — check the Google Review Request Email Sent flag before triggering',pre:['Check the Google Review Request Email Sent flag to avoid sending twice.'],nx:'No further action needed for this task.'},
+  {id:49,sg:'post',st:5,ev:'EP Binder complete / ready for pickup',fi:'EP Binder subitem',ft:'substatus',va:'Binder Complete',au:'Sets Date Client Notified Binder is Ready to Pick Up to today. Sends binder pickup email (individual or couple) — checks Binder Pick Up Email Sent flag first to prevent duplicates. Stamps Binder Pick Up Email Sent flag. Creates update.',no:'N/A',ro:['Sheila (Sheila Scanlon)'],em:true,ds:'Date Client Notified Binder is Ready to Pick Up; Binder Pick Up Email Sent flag',mi:'Marking binder complete before binder is actually ready',pre:['Binder must be physically assembled and ready before triggering.'],nx:'Await client pickup. 2-week and 1-month reminders fire automatically.'},
+  {id:50,sg:'post',st:6,ev:'Binder not picked up — 2-week reminder (date-driven)',fi:'Date Client Notified Binder is Ready to Pick Up — automatic',ft:'auto',va:'Automatic',au:'Fires when Date Client Notified Binder is Ready to Pick Up arrives (2 weeks). Sends 2-week pickup reminder — individual or couple variant. Creates update.',no:'N/A (client email only)',ro:[],em:true,ds:'Based on Date Client Notified Binder is Ready to Pick Up',mi:'Changing the binder-ready date after setting it — disrupts both reminder automations',pre:['Do not change the binder-ready date after setting it.'],nx:'Await client pickup or arrange shipping. 1-month reminder follows automatically.'},
+  {id:51,sg:'post',st:7,ev:'Binder not picked up — 1-month reminder (date-driven)',fi:'Date Client Notified Binder is Ready to Pick Up — automatic',ft:'auto',va:'Automatic',au:'Fires when Date Client Notified Binder is Ready to Pick Up arrives (1 month). Sends 1-month pickup reminder — individual or couple variant. Creates update.',no:'N/A (client email only)',ro:[],em:true,ds:'Based on Date Client Notified Binder is Ready to Pick Up',mi:'Failing to arrange pickup or shipping after the second reminder',pre:[],nx:'Arrange shipping or alternative delivery immediately.'},
+  {id:52,sg:'post',st:8,ev:'Signed PDFs sent to client',fi:'Email Signed PDFs subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:['Sheila (Sheila Scanlon)'],em:false,ds:'Date Last Updated',mi:'Sending PDFs without marking the subitem Complete',pre:[],nx:'Move signed docs to the Final Estate Plan folder and mark that subitem Complete.'},
+  {id:53,sg:'post',st:9,ev:'Signed docs moved to Final Estate Plan folder and uploaded to MyCase',fi:'Signed Docs Folder copied to Final Estate Plan Folder and Uploaded to MyCase subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:['Sheila (Sheila Scanlon)'],em:false,ds:null,mi:'Forgetting to complete this task before closing the matter',pre:[],nx:'Confirm all other post-sign tasks are complete.'},
+  {id:54,sg:'post',st:10,ev:'Wills deposited',fi:'Deposit Wills subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:['Sheila (Sheila Scanlon)'],em:false,ds:'Date Last Updated',mi:'Closing matter without depositing wills where required',pre:[],nx:'Confirm deed e-filing if applicable.'},
+  {id:55,sg:'post',st:11,ev:'Deed e-filed',fi:'E-File Deed subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:['Sheila (Sheila Scanlon)'],em:false,ds:'Date Last Updated',mi:'Recording/e-filing without documenting completion in Monday',pre:[],nx:'Continue remaining closeout tasks.'},
+  {id:56,sg:'post',st:12,ev:'Closing letter drafted',fi:'Closing Letter subitem',ft:'substatus',va:'Complete',au:'Tracking milestone only — no automation fires.',no:'N/A',ro:['Eric','Madeline'],em:false,ds:'Date Last Updated',mi:'Treating matter as closed before closing letter is drafted',pre:['All other post-sign tasks should be complete or in progress.'],nx:'Matter is ready to move to CLOSED – NURTURE once all items are complete.'},
+  {id:57,sg:'post',st:13,ev:'Three-month post-sign check-in (date-driven)',fi:'EP Signing Date — automatic',ft:'auto',va:'Automatic',au:'Fires when EP Signing Date arrives (3 months out), if item is in POST-SIGN IMPLEMENTATION. Sends three-month post-sign check-in email — individual or couple variant. Creates update.',no:'N/A (client email only)',ro:[],em:true,ds:'Based on EP Signing Date',mi:'Incorrect EP Signing Date creates incorrect follow-up timing',pre:['EP Signing Date must be correctly entered.'],nx:'No action required unless client responds.'},
+  {id:58,sg:'post',st:14,ev:'Three-year post-sign check-in (date-driven)',fi:'EP Signing Date — automatic',ft:'auto',va:'Automatic',au:'Fires when EP Signing Date arrives (3 years out). Sends three-year review / check-in email — individual or couple variant. Creates update.',no:'N/A (client email only)',ro:[],em:true,ds:'Based on EP Signing Date',mi:'Failing to preserve correct EP Signing Date — disrupts long-term nurture timing',pre:['EP Signing Date must be correctly entered.'],nx:'No action required unless client responds to schedule a review.'},
+  {id:59,sg:'hyg',st:1,ev:'Incoming email from client',fi:'Automatic — client email address',ft:'auto',va:'N/A',au:'When email received from Client 1 Email or Client 2 Email address, it is added as an update on the matter record.',no:'No one unless tagged',ro:[],em:false,ds:null,mi:'Relying on inbox only instead of checking the Updates log in Monday',pre:[],nx:'Review the email in the Updates log. Respond or tag appropriate staff using @ mentions.'},
+  {id:60,sg:'hyg',st:2,ev:'Any substatus changes (any matter)',fi:'Automatic',ft:'auto',va:'Automatic',au:'When any subitem substatus changes to anything, Date Last Updated is set to today on the matter record.',no:'No one',ro:[],em:false,ds:'Date Last Updated',mi:'Assuming Date Last Updated means the correct automation fired — always verify in the Updates log',pre:[],nx:'Verify in the Updates log that the correct automation actually fired.'},
+  {id:61,sg:'hyg',st:3,ev:'No status movement for one month — stale matter (date-driven)',fi:'Last Status Update_Date — automatic',ft:'auto',va:'Automatic',au:'Fires when Last Status Update_Date arrives (1 month), if item is in FEE AGREEMENT group or adjacent. Notifies Ibis_Admin. Separately: if item is in LEADS group, notifies Ibis_Admin about a stale lead.',no:'Admin (Ibis_Admin)',ro:['Admin (Ibis_Admin)'],em:false,ds:'Based on Last Status Update_Date',mi:'Ignoring stale matter notifications',pre:[],nx:'Review the matter and determine whether to re-engage, move forward, or move to DISENGAGED – NURTURE.'},
+  {id:62,sg:'hyg',st:4,ev:'Status changes in FEE AGREEMENT group — Last Status Update_Date stamped',fi:'Automatic — status change',ft:'auto',va:'Automatic',au:'When Status changes to anything while item is in FEE AGREEMENT group: stamps Last Status Update_Date to today. This drives the 1-month stale matter notification.',no:'No one',ro:[],em:false,ds:'Last Status Update_Date',mi:'Assuming the stale-matter clock resets on substatus changes — it only resets on status changes',pre:[],nx:'No action required — this is automatic.'},
+  {id:63,sg:'hyg',st:5,ev:'Lead sits too long without hiring — auto-disengaged (date-driven)',fi:'Inquiry Date — automatic',ft:'auto',va:'Automatic',au:'6 months after Inquiry Date, if item is still in LEADS and Hired Date is empty: moves to DISENGAGED – NURTURE; notifies Ibis_Admin; sets Status to DISENGAGED/NURTURE; creates update.',no:'Admin (Ibis_Admin)',ro:['Admin (Ibis_Admin)'],em:false,ds:'Based on Inquiry Date',mi:'Leaving old leads in the active lead group forever',pre:[],nx:'Matter moves to DISENGAGED – NURTURE automatically.'},
+  {id:64,sg:'hyg',st:6,ev:'Fee Agreement overdue — Sheila notified (date-driven)',fi:'Drafting Fee Agreement Start Date — automatic',ft:'auto',va:'Automatic',au:'Fires when Drafting Fee Agreement Start Date arrives, if Status is DRAFTING FEE AGT. and item is in FEE AGREEMENT. Notifies Sheila Scanlon that the Fee Agreement is overdue.',no:'Sheila (Sheila Scanlon)',ro:['Sheila (Sheila Scanlon)'],em:false,ds:'Based on Drafting Fee Agreement Start Date',mi:'Ignoring this notification — it means the Fee Agreement has been in drafting too long',pre:[],nx:'Prioritize completing and reviewing the Fee Agreement.'},
+  {id:65,sg:'hyg',st:7,ev:'Post-signing attorney to-do tasks exist (date-driven)',fi:'EP Signing Date — automatic',ft:'auto',va:'Automatic',au:'Fires when EP Signing Date arrives, if Post-Signing Attorney Follow Up column is not empty. Notifies Eric Meleney to address post-sign tasks.',no:'Eric',ro:['Eric'],em:false,ds:'Based on EP Signing Date',mi:'Leaving the Post-Signing Attorney Follow Up column blank when there are tasks to address',pre:[],nx:'Eric reviews and completes any post-signing attorney to-do items.'},
+];
+
+var RULES=[
+  {t:'Use the system in sequence',d:'Move matters in the intended order. Do not jump ahead unless there is a real reason and you know the workflow allows it.'},
+  {t:'Use the correct trigger',d:'Most day-to-day movement should begin with the correct subitem Substatus — not by manually changing the main Status. If there is a subitem for the event, that is usually the correct trigger.'},
+  {t:'Use exact Status and Substatus values',d:'Use the correct milestone exactly as designed. The wrong trigger can send the wrong email, skip a group move, or prevent reminders from firing. Close enough is not good enough.'},
+  {t:'Assign before you trigger',d:'Before changing a Substatus, make sure the correct Responsible Staff is assigned to the subitem. Some notifications go directly to Responsible Staff — if unassigned, the right person will not be notified.'},
+  {t:'Enter dates and upload documents first',d:'Consultation Date before Consult Scheduled. EP Signing Date before R&S Scheduled. Documents uploaded before client-facing emails. These are hard dependencies — the automations will not work correctly without them.'},
+  {t:'After any major change, check the Updates log',d:'Confirm the automation actually fired and the matter moved correctly. Do not assume it worked.'},
+  {t:'Do not resend emails manually if the system already sent one',d:'Every client email automation checks a sent-flag column first to prevent duplicates. Check that flag before sending anything manually.'},
+  {t:'If something did not behave as expected, stop and ask',d:'Do not click multiple statuses trying to force the board forward. Stop, check the Updates log and Run History, and ask Eric before making additional changes.'},
+  {t:'Notes belong in Updates',d:"Record anything important in the matter's Updates section. Use @ mentions when needed. Incoming client emails from designated addresses are automatically saved there."},
+  {t:'Monday.com should reflect reality',d:'If something happened in real life — a signing, retainer payment, completed consult — the matter should be updated promptly. Do not treat Monday.com as a cleanup task.'},
+];
+
+var TS=[
+  {p:'Email did not send',f:'Check the email-sent flag column AND the Updates log — every client email checks a flag first; if flag was already set, email will not send again',n:'Check Run History; notify Eric if automation failed'},
+  {p:'Status did not change',f:'Confirm correct subitem Substatus was changed (not main Status) AND item was in the correct group when triggered',n:'Check Run History'},
+  {p:'Matter did not move groups',f:'Confirm the right trigger was used in the right order and item was already in the expected group',n:'Check Run History; ask Eric'},
+  {p:'Notification did not go out',f:'Check Updates log and notification settings; confirm Responsible Staff was assigned BEFORE changing substatus',n:'Ask Eric to inspect the automation'},
+  {p:'Wrong email sent (individual vs. couple)',f:'Check whether Client 2 Email was populated correctly — individual/couple routing is determined by whether Client 2 Email is empty or not',n:'Notify Eric immediately; add a clear internal update to the matter record'},
+  {p:'Duplicate subitems appeared',f:'Do not delete randomly — subitems are created automatically at multiple trigger points',n:'Ask Eric which to keep and which to remove'},
+  {p:'Unsure what to click',f:'Review subitems first to find the correct trigger; check the Updates log for what happened most recently',n:'Ask Eric before clicking anything'},
+];
+
+var CONCEPTS=[
+  {n:1,ttl:'Board',def:'The main workspace. Our EP board is Ibis_EP_Active Workflow. Contains all leads, active matters, and historical/closed matters.',ex:'Ibis_EP_Active Workflow'},
+  {n:2,ttl:'Group',def:'A section within the board reflecting a broad stage. Matters move between groups automatically as they progress.',ex:'LEADS → FEE AGREEMENT → DRAFTING / REVIEW → READY FOR SIGNING → POST-SIGN IMPLEMENTATION → CLOSED – NURTURE → DISENGAGED – NURTURE'},
+  {n:3,ttl:'Item',def:'The main row. Each item = one client matter (e.g., Smith, Susie & John).',ex:'Smith, Susie & John — the main record for the matter'},
+  {n:4,ttl:'Status',def:"The high-level stage on the main item — the matter's \"current chapter.\" In most cases Status changes automatically when the correct Substatus is triggered.",ex:'INQUIRY → CONSULT SCHEDULED → CONSULT COMPLETED → DRAFTING FEE AGT. → HIRED → DRAFTING EP → R&S SCHEDULED → POST-SIGN IMPLEMENTATION'},
+  {n:5,ttl:'Subitems',def:'Tasks and checkpoints under the main matter. Created automatically at key workflow stages — do not create them manually. Every subitem should have Responsible Staff assigned BEFORE changing its Substatus.',ex:'Consultation, Fee Agreement, Hired, Trust(s), Will(s), DPOA(s), Review and Sign, EP Binder, Closing Letter'},
+  {n:6,ttl:'Substatus',def:'The column on a subitem showing the current specific task or trigger point. Substatus drives most automations — the main Status usually updates because the correct Substatus was changed first.',ex:'Consult Scheduled → Consult Completed → Drafting Fee Agt. → Fee Agt. Signed → Hired → Drafting EP → EP Signed'},
+  {n:7,ttl:'Staff personal substatus',def:"A second Substatus column on each subitem for personal tracking only. No automations are tied to it. Use it freely without affecting anyone else.",ex:"Sheila marks the Closing Letter's Staff Personal Substatus as 'Sent for Review' — helps her track it without affecting automations."},
+  {n:8,ttl:'Individual vs. couple routing',def:'Every client email automation checks whether Client 2 Email is populated. If empty → individual email. If present → couple email. This is automatic — just make sure Client 2 Email is correctly filled in on the matter record.',ex:'Consult scheduled email: individual version if Client 2 Email is empty, couple version if Client 2 Email is present.'},
+  {n:9,ttl:'Updates',def:'The running log for the matter. Records status changes, automation outputs, staff notes, and incoming client emails (automatically saved from Client 1 and Client 2 email addresses).',ex:'All handoff notes, important events, and @ mentions belong here.'},
+  {n:10,ttl:'Automations',def:'Rules that fire when a trigger happens. Many client emails check a sent-flag first to prevent duplicates. Individual vs. couple routing is automatic based on Client 2 Email.',ex:'EP Signed substatus → Status → POST-SIGN IMPLEMENTATION → notifies team → moves group → creates 8 subitems → sends congratulations email.'},
+];
+
+/* ── State ── */
+var tab='nav',sgF='all',roleF='All roles',selId=null,srch='',wh='';
+
+/* ── Helpers ── */
+function sgOf(id){return SG.find(function(s){return s.id===id;})||{lbl:'',c:'#546E7A'};}
+function ftOf(k){return FT[k]||FT.auto;}
+function totSg(sg){return EV.filter(function(e){return e.sg===sg;}).length;}
+function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function filtered(){
+  var q=srch.toLowerCase();
+  return EV.filter(function(e){
+    if(sgF!=='all'&&e.sg!==sgF)return false;
+    if(roleF!=='All roles'&&e.ro.indexOf(roleF)===-1)return false;
+    if(!q)return true;
+    return[e.ev,e.fi,e.va,e.au,e.no,e.nx,e.mi].some(function(f){return(f||'').toLowerCase().indexOf(q)!==-1;});
+  });
+}
+
+function expandQ(raw){
+  var q=raw.toLowerCase().trim();var terms=[q];
+  Object.keys(SYNONYMS).forEach(function(k){
+    var vals=SYNONYMS[k];
+    if(q.indexOf(k)!==-1)vals.forEach(function(v){if(terms.indexOf(v)===-1)terms.push(v);});
+    vals.forEach(function(v){if(q.indexOf(v)!==-1){if(terms.indexOf(k)===-1)terms.push(k);vals.forEach(function(v2){if(terms.indexOf(v2)===-1)terms.push(v2);});}});
+    if(k.indexOf(q)!==-1||q.indexOf(k)!==-1){if(terms.indexOf(k)===-1)terms.push(k);vals.forEach(function(v){if(terms.indexOf(v)===-1)terms.push(v);});}
+  });
+  return terms;
+}
+
+function whFiltered(){
+  var raw=wh.toLowerCase().trim();
+  if(raw.length<2)return[];
+  var terms=expandQ(raw);
+  function flds(e){return[e.ev,e.va,e.au,e.nx,e.fi,e.mi,e.no].map(function(f){return(f||'').toLowerCase();}).join(' ');}
+  var scored=EV.map(function(e){
+    var score=terms.reduce(function(s,t){return s+(flds(e).indexOf(t)!==-1?1:0);},0);
+    return{e:e,score:score};
+  }).filter(function(x){return x.score>0;});
+  scored.sort(function(a,b){return b.score-a.score;});
+  return scored.map(function(x){return x.e;});
+}
+
+function chipH(c,t){return'<span class="lchip" style="background:'+c+'">'+t+'</span>';}
+function staffChip(s){
+  var k=Object.keys(STAFF).find(function(k){return s.toLowerCase().indexOf(k.split(' ')[0].toLowerCase())!==-1;});
+  return'<span class="staff-chip" style="background:'+(k?STAFF[k]:'#546E7A')+'">'+s+'</span>';
+}
+function nChips(s){
+  if(!s||s==='N/A'||s.indexOf('No one')===0)return'<span style="font-size:11px;color:var(--t4)">'+(s||'N/A')+'</span>';
+  return s.split(/[\/,]/).map(function(p){return p.trim();}).filter(Boolean).map(staffChip).join('');
+}
+function aLbl(e){
+  var ft=ftOf(e.ft);
+  if(e.ft==='substatus'||e.ft==='status'){
+    var c=sC(e.va)||ft.bg;
+    return'<span style="font-size:12px;color:var(--t2)">'+(e.ft==='substatus'?'Change substatus to':'Change status to')+'</span> <span class="lbadge" style="background:'+c+'">'+e.va+'</span>';
+  }
+  if(e.ft==='column')return'<span class="lbadge" style="background:'+ft.bg+'">'+ft.l+'</span><span style="font-size:12px;color:var(--t2);margin-left:5px">— '+e.va+'</span>';
+  return'<span class="lbadge" style="background:'+ft.bg+'">'+ft.l+'</span>';
+}
+
+/* ── Render ── */
+function render(){buildSB();buildPane();}
+function setTab(t){tab=t;selId=null;srch='';wh='';render();}
+function setSg(v){sgF=v;selId=null;render();}
+function setRole(v){roleF=v;selId=null;render();}
+
+function buildSB(){
+  var nav=[
+    {g:'Reference',items:[{id:'nav',icon:'ti-list-search',l:'Workflow navigator'},{id:'wh',icon:'ti-timeline-event',l:'What just happened?'},{id:'qr',icon:'ti-layout-list',l:'Quick reference'}]},
+    {g:'Learn',items:[{id:'concepts',icon:'ti-book',l:'Key concepts'},{id:'rules',icon:'ti-shield-check',l:'Core rules'}]},
+    {g:'Fix',items:[{id:'mistakes',icon:'ti-alert-triangle',l:'Common mistakes'},{id:'ts',icon:'ti-tool',l:'Troubleshooting'}]},
+  ];
+  document.getElementById('SB').innerHTML=nav.map(function(g){
+    return'<div class="sb-grp-lbl">'+g.g+'</div>'+g.items.map(function(i){
+      return'<button class="sb-item'+(tab===i.id?' on':'')+'" onclick="setTab(\''+i.id+'\')"><i class="ti '+i.icon+'"></i>'+i.l+'</button>';
+    }).join('')+'<div class="sb-sep"></div>';
+  }).join('')+'<div class="sb-bottom"><div class="sb-bottom-dot"></div>110 automations · 65 events</div>';
+}
+
+function buildLegend(){
+  return'<div class="legend"><div class="legend-ttl">Color legend</div>'
+    +'<div class="legend-row"><span class="legend-lbl">Action type</span>'+Object.values(FT).map(function(v){return'<span class="lbadge" style="background:'+v.bg+'">'+v.l+'</span>';}).join('')+'</div>'
+    +'<div class="legend-row"><span class="legend-lbl">Stage</span>'+SG.map(function(s){return'<span class="lbadge" style="background:'+s.c+'">'+s.lbl+'</span>';}).join('')+'</div>'
+    +'<div class="legend-row"><span class="legend-lbl">Staff</span>'+Object.entries(STAFF).map(function(e){return chipH(e[1],e[0]);}).join('')+'</div></div>';
+}
+
+function buildPane(){
+  var p=document.getElementById('PANE');
+  if(tab==='nav')p.innerHTML=buildNav();
+  else if(tab==='wh')p.innerHTML=buildWH();
+  else if(tab==='qr')p.innerHTML=buildQR();
+  else if(tab==='concepts')p.innerHTML=buildConcepts();
+  else if(tab==='rules')p.innerHTML=buildRules();
+  else if(tab==='mistakes')p.innerHTML=buildMistakes();
+  else p.innerHTML=buildTS();
+  attachEv();
+}
+
+function buildNav(){
+  if(selId){var e=EV.find(function(x){return x.id===selId;});if(!e){selId=null;return buildNav();}return buildDetail(e);}
+  var list=filtered();
+  var h=buildLegend();
+  h+='<div class="chips-row"><button class="chip-btn'+(sgF==='all'?' on':'')+'" style="'+(sgF==='all'?'background:var(--teal);color:#fff;border-color:var(--teal)':'')+'" data-sg="all">All stages</button>';
+  SG.forEach(function(s){var on=sgF===s.id;h+='<button class="chip-btn'+(on?' on':'')+'" style="'+(on?'background:'+s.c+';color:#fff;border-color:'+s.c:'')+'" data-sg="'+s.id+'">'+s.lbl+'</button>';});
+  h+='</div><div class="chips-row">';
+  ROLES.forEach(function(r){var on=roleF===r;var col=STAFF[r];h+='<button class="chip-btn'+(on?' on':'')+'" style="'+(on&&col?'background:'+col+';color:#fff;border-color:'+col:on?'background:var(--teal);color:#fff;border-color:var(--teal)':'')+'" data-role="'+escH(r)+'">'+r+'</button>';});
+  h+='</div>';
+  h+='<div class="srch-wrap"><i class="ti ti-search"></i><input type="text" id="srchIn" placeholder="Search events, staff, values, descriptions…" value="'+escH(srch)+'" oninput="onSrch(this.value)">'+(srch?'<button class="srch-clear" onclick="clrSrch()"><i class="ti ti-x"></i></button>':'')+'</div>';
+  h+='<div class="count-note" id="cntEl">'+list.length+' event'+(list.length===1?'':'s')+'</div>';
+  h+='<div id="evList">'+buildEvList(list)+'</div>';
+  return'<div class="pane">'+h+'</div>';
+}
+
+function buildEvList(list){
+  if(!list.length)return'<div class="empty"><i class="ti ti-search"></i>No events match your filters.</div>';
+  var h='';
+  if(sgF==='all'){
+    SG.forEach(function(s){
+      var items=list.filter(function(e){return e.sg===s.id;});
+      if(!items.length)return;
+      h+='<div class="sg-hdr"><div class="sg-dot" style="background:'+s.c+'"></div><div class="sg-lbl" style="color:'+s.c+'">'+s.lbl+'</div><div class="sg-ct">'+items.length+' events</div><div class="sg-line"></div></div>';
+      items.forEach(function(e){h+=evRow(e,s);});
+    });
+  }else{list.forEach(function(e){h+=evRow(e,sgOf(e.sg));});}
+  return h;
+}
+
+function evRow(e,s){
+  var ft=ftOf(e.ft);var hasPre=e.pre&&e.pre.length>0;
+  return'<button class="ev" data-ev="'+e.id+'" style="border-left-color:'+s.c+'"><span class="ev-n" style="background:'+s.c+'">'+e.st+'</span><span class="ev-lbl">'+e.ev+'</span>'+(hasPre?'<span class="ev-pre"><i class="ti ti-alert-triangle" style="font-size:9px;margin-right:2px"></i>prereqs</span>':'')+'<span class="ev-ft" style="background:'+ft.bg+'">'+ft.l+'</span></button>';
+}
+
+function onSrch(v){
+  srch=v;
+  var list=filtered();
+  var c=document.getElementById('cntEl');
+  var l=document.getElementById('evList');
+  if(c)c.textContent=list.length+' event'+(list.length===1?'':'s');
+  if(l){l.innerHTML=buildEvList(list);attachEv();}
+  var i=document.getElementById('srchIn');
+  if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}
+}
+function clrSrch(){srch='';render();}
+
+function buildDetail(e){
+  var s=sgOf(e.sg);
+  var pct=Math.round((e.st/totSg(e.sg))*100);
+  var hasPre=e.pre&&e.pre.length>0;
+  return'<div class="pane">'
+    +'<button class="back" data-back="1"><i class="ti ti-arrow-left" style="font-size:13px"></i>Back to list</button>'
+    +'<div class="prog-bar-wrap">'
+      +'<span class="lbadge" style="background:'+s.c+'">'+s.lbl+'</span>'
+      +'<div class="prog-track"><div class="prog-fill" style="width:'+pct+'%;background:'+s.c+'"></div></div>'
+      +'<span class="prog-lbl">Step '+e.st+' of '+totSg(e.sg)+'</span>'
+    +'</div>'
+    +'<div class="det-card" style="border-top:3px solid '+s.c+'">'
+      +'<div class="det-head" style="background:linear-gradient(135deg,'+s.c+'18 0%,transparent 60%)">'
+        +'<div class="det-title">'+e.ev+'</div>'
+      +'</div>'
+      +'<div class="det-body">'
+        +(hasPre?'<div class="signal pre"><div class="signal-ttl"><i class="ti ti-alert-triangle"></i>Before you trigger this</div><ul>'+e.pre.map(function(p){return'<li>'+p+'</li>';}).join('')+'</ul></div>':'')
+        +'<div class="click-block" style="background:'+s.c+'0D;border-color:'+s.c+'50"><div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:'+s.c+';border-radius:0"></div><div class="click-block-lbl"><i class="ti ti-cursor-text" style="font-size:11px;color:'+s.c+'"></i><span style="color:'+s.c+'">Where to click</span></div><div class="click-block-val" style="color:'+s.c+'">'+e.fi+'</div></div>'
+        +'<div class="iblock"><div class="iblock-lbl">Action</div><div style="margin-top:4px">'+aLbl(e)+'</div></div>'
+        +'<div class="det-divider"></div>'
+        +'<div class="signal go"><div class="signal-ttl"><i class="ti ti-bolt"></i>What Monday will do</div>'+e.au+'</div>'
+        +'<div class="signal nxt"><div class="signal-ttl"><i class="ti ti-arrow-right"></i>What\'s next</div>'+e.nx+'</div>'
+        +'<div class="det-divider"></div>'
+        +'<div class="igrid">'
+          +'<div class="iblock" style="margin-bottom:0"><div class="iblock-lbl">Who gets notified</div><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:1px">'+nChips(e.no)+'</div></div>'
+          +'<div class="iblock" style="margin-bottom:0"><div class="iblock-lbl">Date stamped</div><div class="iblock-val" style="margin-top:3px;font-size:12px;font-family:var(--mono)">'+(e.ds||'None')+'</div></div>'
+        +'</div>'
+        +'<div class="flag-row" style="margin-top:8px">'
+          +'<span class="flag" style="'+(e.em?'background:#F0FDF4;border-color:#86EFAC;color:#14532D':'background:var(--s2);border-color:var(--bd);color:var(--t4)')+'"><i class="ti ti-mail" style="font-size:12px"></i>Client email: '+(e.em?'Yes':'No')+'</span>'
+          +'<span class="flag" style="'+(e.ds?'background:#EFF6FF;border-color:#93C5FD;color:#1E3A5F':'background:var(--s2);border-color:var(--bd);color:var(--t4)')+'"><i class="ti ti-calendar" style="font-size:12px"></i>Date stamped: '+(e.ds?'Yes':'No')+'</span>'
+          +(e.ft==='column'?'<span class="flag" style="background:#FFF7ED;border-color:#FED7AA;color:#7C2D12"><i class="ti ti-database" style="font-size:12px"></i>Enter data first — no automation triggered</span>':'')
+        +'</div>'
+        +'<div class="det-divider"></div>'
+        +'<div class="signal wrn" style="margin-bottom:0"><div class="signal-ttl"><i class="ti ti-alert-circle"></i>Common mistake to avoid</div>'+e.mi+'</div>'
+      +'</div>'
+    +'</div>'
+  +'</div>';
+}
+
+function buildWH(){
+  var matches=whFiltered();var q=wh.trim();var res='';
+  if(q.length>=2&&matches.length===0){
+    res='<div class="empty"><i class="ti ti-mood-confuzed"></i>No matching events. Try a synonym — "consult" for consultation, "becky" for RYP events, "r&s" for signing.</div>';
+  }else{
+    res=matches.map(function(e){
+      var s=sgOf(e.sg);var hasPre=e.pre&&e.pre.length>0;
+      return'<div class="wh-result" style="border-top-color:'+s.c+'">'
+        +'<div class="wh-result-hdr"><span class="lbadge" style="background:'+s.c+'">'+s.lbl+'</span><span style="font-size:13px;font-weight:600;flex:1;color:var(--t1);letter-spacing:-.015em">'+e.ev+'</span></div>'
+        +(hasPre?'<div class="signal pre" style="margin-bottom:8px"><div class="signal-ttl"><i class="ti ti-alert-triangle"></i>Before you trigger</div><ul>'+e.pre.map(function(p){return'<li>'+p+'</li>';}).join('')+'</ul></div>':'')
+        +'<div class="signal go" style="margin-bottom:8px"><div class="signal-ttl"><i class="ti ti-bolt"></i>What Monday will do</div>'+e.au+'</div>'
+        +'<div class="signal nxt" style="margin-bottom:8px"><div class="signal-ttl"><i class="ti ti-arrow-right"></i>What\'s next</div>'+e.nx+'</div>'
+        +'<button class="wh-peek-btn" data-ev="'+e.id+'"><i class="ti ti-external-link" style="font-size:12px"></i>Full details</button>'
+      +'</div>';
+    }).join('');
+  }
+  return'<div class="pane">'
+    +'<div class="wh-hero">'
+      +'<div class="wh-hero-ttl"><i class="ti ti-timeline-event"></i>What just happened?</div>'
+      +'<div class="wh-inp-wrap"><i class="ti ti-search" style="color:var(--t3);font-size:15px"></i>'
+        +'<input type="text" id="whIn" placeholder="Type freely — \'fee agt\', \'becky\', \'signed\', \'retainer paid\', \'r&s\'…" value="'+escH(wh)+'" oninput="onWH(this.value)">'
+        +(wh?'<button class="srch-clear" onclick="clrWH()"><i class="ti ti-x"></i></button>':'')
+      +'</div>'
+      +'<div class="wh-hint">'+(q.length>=2?'<strong>'+matches.length+'</strong> matching event'+(matches.length===1?'':'s')+' — results ranked by relevance':'Smart search: understands abbreviations, staff names, and synonyms. Results ranked by relevance.')+'</div>'
+      +(!wh?'<div class="wh-suggestions">'+WH_SUGGESTIONS.map(function(s){return'<button class="wh-sug" data-whs="'+escH(s)+'">'+s+'</button>';}).join('')+'</div>':'')
+    +'</div>'
+    +res
+  +'</div>';
+}
+
+function onWH(v){wh=v;document.getElementById('PANE').innerHTML=buildWH();attachEv();var i=document.getElementById('whIn');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}}
+function clrWH(){wh='';document.getElementById('PANE').innerHTML=buildWH();attachEv();}
+
+function buildQR(){
+  var h='<div class="pane"><div class="info-note"><i class="ti ti-info-circle" style="font-size:14px"></i>Every event in sequence. Click any row to open the full detail view.</div>';
+  SG.forEach(function(s){
+    var items=EV.filter(function(e){return e.sg===s.id;});
+    if(!items.length)return;
+    h+='<div class="qr-stage">'
+      +'<div class="qr-hdr" style="background:'+s.c+'"><i class="ti ti-arrow-right" style="font-size:13px"></i>'+s.lbl+'<span style="opacity:.7;font-weight:400;font-size:11px;margin-left:5px">'+items.length+' events</span></div>';
+    items.forEach(function(e){
+      var ft=ftOf(e.ft);var hasPre=e.pre&&e.pre.length>0;
+      h+='<button class="qr-row" data-ev="'+e.id+'" style="border-left-color:'+s.c+'">'
+        +'<span class="qr-n" style="background:'+s.c+'">'+e.st+'</span>'
+        +'<span class="qr-ev">'+e.ev+'</span>'
+        +(hasPre?'<span class="ev-pre" style="font-size:10px">prereqs</span>':'')
+        +'<span class="lbadge" style="background:'+ft.bg+'">'+ft.l+'</span>'
+      +'</button>';
+    });
+    h+='</div>';
+  });
+  return h+'</div>';
+}
+
+function buildConcepts(){
+  return'<div class="pane">'
+    +CONCEPTS.map(function(c){
+      return'<div class="concept">'
+        +'<div class="concept-n">'+c.n+'</div>'
+        +'<div class="concept-ttl">'+c.ttl+'</div>'
+        +'<div class="concept-def">'+c.def+'</div>'
+        +'<div class="concept-ex"><div class="concept-ex-lbl">Example</div><div class="concept-ex-val">'+c.ex+'</div></div>'
+      +'</div>';
+    }).join('')
+  +'</div>';
+}
+
+function buildRules(){
+  return'<div class="pane">'
+    +RULES.map(function(r,i){
+      return'<div class="rule">'
+        +'<div class="rule-n">'+(i+1)+'</div>'
+        +'<div><div class="rule-t">'+r.t+'</div><div class="rule-d">'+r.d+'</div></div>'
+      +'</div>';
+    }).join('')
+  +'</div>';
+}
+
+function buildMistakes(){
+  var by={};
+  EV.forEach(function(e){if(e.mi&&e.mi!=='N/A'){if(!by[e.sg])by[e.sg]=[];by[e.sg].push(e);}});
+  var h='<div class="pane">';
+  SG.forEach(function(s){
+    var items=by[s.id]||[];
+    if(!items.length)return;
+    h+='<div class="sg-hdr"><div class="sg-dot" style="background:'+s.c+'"></div><div class="sg-lbl" style="color:'+s.c+'">'+s.lbl+'</div><div class="sg-ct">'+items.length+' items</div><div class="sg-line"></div></div>';
+    items.forEach(function(e){
+      h+='<div class="mk" style="border-left-color:'+s.c+'">'
+        +'<div class="mk-ev">'+e.ev+'</div>'
+        +'<div class="mk-tx">'+e.mi+'</div>'
+      +'</div>';
+    });
+  });
+  return h+'</div>';
+}
+
+function buildTS(){
+  return'<div class="pane">'
+    +TS.map(function(t){
+      return'<div class="ts">'
+        +'<div class="ts-p"><i class="ti ti-circle-x" style="font-size:15px;color:#B91C1C"></i>'+t.p+'</div>'
+        +'<div class="ts-g">'
+          +'<div class="ts-c"><div class="ts-cl">First check</div><div class="ts-cv">'+t.f+'</div></div>'
+          +'<div class="ts-c"><div class="ts-cl">Next step</div><div class="ts-cv">'+t.n+'</div></div>'
+        +'</div>'
+      +'</div>';
+    }).join('')
+  +'</div>';
+}
+
+/* ── Event delegation ── */
+function attachEv(){
+  var bk=document.querySelector('[data-back]');
+  if(bk)bk.onclick=function(){selId=null;render();};
+}
+
+document.addEventListener('click',function(ev){
+  var btn=ev.target.closest('[data-sg],[data-role],[data-ev],[data-back],[data-whs]');
+  if(!btn)return;
+  if(btn.dataset.sg!==undefined){setSg(btn.dataset.sg);return;}
+  if(btn.dataset.role!==undefined){setRole(btn.dataset.role);return;}
+  if(btn.dataset.ev!==undefined){selId=parseInt(btn.dataset.ev);tab='nav';render();return;}
+  if(btn.dataset.back!==undefined){selId=null;render();return;}
+  if(btn.dataset.whs!==undefined){wh=btn.dataset.whs;tab='wh';document.getElementById('PANE').innerHTML=buildWH();attachEv();return;}
+});
+
+render();
+</script>
+</body>
+</html>
